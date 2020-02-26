@@ -1,0 +1,477 @@
+{
+	"info": {
+		"_postman_id": "d4080370-3d13-40df-905e-61d94fa7db6e",
+		"name": "OpenAPI[CRUD]",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CREATE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "950710ea-e0d6-4170-8b9d-d22ba77ac38b",
+						"exec": [
+							"pm.test(\"ok\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData._meta.success).to.eql(true);",
+							"});",
+							"",
+							"//Из ответа берем имя и записываем его в Firstname2.",
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"Firstname2\",jsonData. result.first_name);",
+							"",
+							"//Из ответа берем фамилию и записываем её. ",
+							"let jsonData0 = pm.response.json();",
+							"pm.environment.set(\"Last_name2\",jsonData. result.last_name);",
+							"",
+							"//Из ответа берем почту и записываем её. ",
+							"let jsonData1 = pm.response.json();",
+							"pm.environment.set(\"email_1\",jsonData. result.email);",
+							"//Из ответа бере телефон и записываем его.",
+							"let jsonData2 = pm.response.json();",
+							"pm.environment.set(\"phone_v1\",jsonData. result.phone);",
+							"// id записываем",
+							"let jsonData3 = pm.response.json();",
+							"pm.environment.set(\"id\",jsonData. result.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "{{KEYAUTH}}",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"first_name\": \"{{Firstname}}\",\r\n      \"last_name\": \"{{Last_name}}\",\r\n      \"gender\": \"male\",\r\n      \"email\": \"{{email}}\",\r\n      \"phone\": \"{{Phone}}\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://gorest.co.in/public-api/users",
+					"protocol": "https",
+					"host": [
+						"gorest",
+						"co",
+						"in"
+					],
+					"path": [
+						"public-api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "836b17e8-b434-473b-9536-348d400a7b55",
+						"exec": [
+							"pm.test(\"ok\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData._meta.success).to.eql(true);",
+							"});",
+							"",
+							"//Теперь проверяем, что все значения соответветствуют созданным.",
+							"pm.test(\"Id ok\", function () {",
+							"    let id = pm.environment.get(\"id\"); ",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.result.id).to.eql(id);",
+							"});",
+							"//Firstname",
+							"pm.test(\"Firstname\", function () {",
+							"    let firstname =",
+							"pm.environment.get(\"Firstname2\"); ",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.result.first_name).to.eql(firstname);",
+							"});",
+							"//lastname",
+							"pm.test(\"Last_name\", function () {",
+							"    let Last_name =",
+							"pm.environment.get(\"Last_name2\"); ",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.result.last_name).to.eql(Last_name);",
+							"});",
+							"//email",
+							"pm.test(\"email\", function () {",
+							"    let email =",
+							"pm.environment.get(\"email_1\"); ",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.result.email).to.eql(email);",
+							"});",
+							"//phone",
+							"pm.test(\"Phone\", function () {",
+							"    let phone =",
+							"pm.environment.get(\"phone_v1\"); ",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.result.phone).to.eql(phone);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "9e35ac16-03d7-4276-90e6-c4838bc23551",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "{{KEYAUTH}}",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://gorest.co.in/public-api/users/{{id}}",
+					"protocol": "https",
+					"host": [
+						"gorest",
+						"co",
+						"in"
+					],
+					"path": [
+						"public-api",
+						"users",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b03a2f75-c085-4083-af80-e7576254f1d6",
+						"exec": [
+							"pm.test(\"ok\", function () {",
+							"    var jsonData1 = pm.response.json();",
+							"    pm.expect(jsonData1._meta.success).to.eql(true);",
+							"});",
+							"",
+							"let jsonData3 = pm.response.json();",
+							"pm.environment.set(\"Last_name3\",jsonData3. result.last_name);",
+							"",
+							"let jsonData4 = pm.response.json();",
+							"pm.environment.set(\"phone_v2\",jsonData3. result.phone);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "{{KEYAUTH}}",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"last_name\": \"{{Last_name}}\",\r\n      \"phone\": \"{{Phone}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://gorest.co.in/public-api/users/{{id}}",
+					"protocol": "https",
+					"host": [
+						"gorest",
+						"co",
+						"in"
+					],
+					"path": [
+						"public-api",
+						"users",
+						"{{id}}"
+					]
+				},
+				"description": "Меняем фамилию и телефон, записываем изменения. "
+			},
+			"response": []
+		},
+		{
+			"name": "Get after update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2689d29f-06b7-47a5-a184-21e0b2dd21fe",
+						"exec": [
+							"pm.test(\"ok\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData._meta.success).to.eql(true);",
+							"});",
+							"",
+							"//Теперь проверяем, что все значения соответветствуют созданным.",
+							"pm.test(\"Id ok\", function () {",
+							"    let id = pm.environment.get(\"id\"); ",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.result.id).to.eql(id);",
+							"});",
+							"//Firstname",
+							"pm.test(\"Firstname\", function () {",
+							"    let firstname =",
+							"pm.environment.get(\"Firstname2\"); ",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.result.first_name).to.eql(firstname);",
+							"});",
+							"//lastname",
+							"pm.test(\"Last_name\", function () {",
+							"    let Last_name =",
+							"pm.environment.get(\"Last_name3\"); ",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.result.last_name).to.eql(Last_name);",
+							"});",
+							"//email",
+							"pm.test(\"email\", function () {",
+							"    let email =",
+							"pm.environment.get(\"email_1\"); ",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.result.email).to.eql(email);",
+							"});",
+							"//phone",
+							"pm.test(\"Phone\", function () {",
+							"    let phone =",
+							"pm.environment.get(\"phone_v2\"); ",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.result.phone).to.eql(phone);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "{{KEYAUTH}}",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://gorest.co.in/public-api/users/{{id}}",
+					"protocol": "https",
+					"host": [
+						"gorest",
+						"co",
+						"in"
+					],
+					"path": [
+						"public-api",
+						"users",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "90a8ad02-f52c-468e-bd17-343840dd1f16",
+						"exec": [
+							"pm.test(\"ok\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData._meta.success).to.eql(true);",
+							"});",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "{{KEYAUTH}}",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://gorest.co.in/public-api/users/{{id}}",
+					"protocol": "https",
+					"host": [
+						"gorest",
+						"co",
+						"in"
+					],
+					"path": [
+						"public-api",
+						"users",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET after Delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8158a15a-8d3b-4118-aee8-fc12ac991326",
+						"exec": [
+							"pm.test(\"ok\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData._meta.success).to.eql(false);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Your test name\", function () {",
+							"    let id1 = pm.environment.get(\"id\"); ",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.result.message).to.eql((\"Object not found: \") + id1)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "{{KEYAUTH}}",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://gorest.co.in/public-api/users/{{id}}",
+					"protocol": "https",
+					"host": [
+						"gorest",
+						"co",
+						"in"
+					],
+					"path": [
+						"public-api",
+						"users",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
